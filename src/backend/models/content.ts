@@ -14,4 +14,4 @@ const content = new mongoose.Schema(
     }
 )
 const contentModel = mongoose.model("Content",content);
-module.exports=contentModel;
+export default module.exports=contentModel;

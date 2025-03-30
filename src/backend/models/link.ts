@@ -4,4 +4,4 @@ const link = new  mongoose.Schema({
     userId:{type:mongoose.Types.ObjectId,ref:"User", require:true}
 })
 const linkModel= mongoose.model("Link",link)
-module.exports(linkModel)
+export default module.exports(linkModel)
