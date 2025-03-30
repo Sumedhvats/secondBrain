@@ -1,0 +1,6 @@
+import mongoose from "mongoose";
+const tags = new  mongoose.Schema({
+    title:{ type:String,require:true }
+})
+const tagsModel= mongoose.model("Tag",tags)
+module.exports(tagsModel)
