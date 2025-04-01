@@ -20,47 +20,51 @@ export const addContent = async (
   try {
     const { type, link, title, tags } = req.body;
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res
-        .status(401)
-        .json({ error: "Access denied. No token provided." });
+    if (!authHeader ) {
+      res.status(401).json({ error: "Access denied. No token provided." });
+    } else {
+      const token = authHeader; 
+      const secret = process.env.JWT_SECRET;
+    
+      if (!secret) {
+        throw new Error("JWT_SECRET is not defined in the environment variables.");
+      }
+    
+      const decoded = jwt.verify(token, secret);
+    
+      let tag = await Tags.findOne({ title: tags }).lean();
+      if (!tag) {
+        tag = await Tags.create({ title: tags });
+      }
+    
+      const newContent = await Content.create({
+        type,
+        link,
+        title,
+        //@ts-ignore
+        userId: decoded.userId, 
+        tags: [tag._id],
+      });
+    
+      res.status(201).json({ message: "Content added successfully", content: newContent });
     }
-    const secret = process.env.JWT_SECRET;
-
-    if (!secret) {
-      throw new Error(
-        "JWT_SECRET is not defined in the environment variables."
-      );
-    }
-    let tag = await Tags.findOne({ title: tags }).lean();
-    if (!tag) {
-      tag = await Tags.create({ title: tags });
-    }
-
-    const decoded = jwt.verify(authHeader, secret) as { userId: string };
-    const newContent = Content.create({
-      type,
-      link,
-      title,
-      userId: decoded.userId,
-      tags: [tag._id],
-    });
-  } catch (e) {
-    res.status(500).json({ message: "unexpected error" });
+   } catch (e) {
+    res.status(500).json({ message: "unexpected error",e });
   }
 };
 
 export const content = async (req: express.Request, res: express.Response) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Access denied. No token provided." });
-  }
+  if (!authHeader) {
+    res.status(401).json({ error: "Access denied. No token provided." });
+  }else{
   const secret = process.env.JWT_SECRET;
 
   if (!secret) {
     throw new Error("JWT_SECRET is not defined in the environment variables.");
   }
-  const decoded = jwt.verify(authHeader, secret) as { userId: string };
+  const decoded = jwt.verify(authHeader, secret);
+  //@ts-ignore
   const contents = await Content.find({ userId: decoded.userId }).lean();
   if (contents.length == 0) {
     res.status(400).json({
@@ -71,6 +75,7 @@ export const content = async (req: express.Request, res: express.Response) => {
       content: contents,
     });
   }
+}
 };
 
 export const deleteContent = async (
@@ -85,13 +90,14 @@ export const deleteContent = async (
   }
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Access denied. No token provided." });
+    res.status(401).json({ error: "Access denied. No token provided." });
   }
   const secret = process.env.JWT_SECRET;
 
   if (!secret) {
     throw new Error("JWT_SECRET is not defined in the environment variables.");
   }
+   //@ts-ignore
   const decoded = jwt.verify(authHeader, secret) as { userId: string };
   const deleted = await Content.deleteOne({ _id: id, userId: decoded.userId });
   if (deleted.deletedCount) {

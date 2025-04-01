@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+    import mongoose from "mongoose";
 const contentTypes = ['image', 'video', 'article', 'audio']; // Extend as needed
 const content = new mongoose.Schema(
     {
@@ -14,4 +14,4 @@ const content = new mongoose.Schema(
     }
 )
 const contentModel = mongoose.model("Content",content);
-export default module.exports=contentModel;
+export default contentModel;
