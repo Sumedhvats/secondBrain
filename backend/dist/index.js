@@ -9,11 +9,12 @@ const express_1 = __importDefault(require("express"));
 const mongoose = require("mongoose");
 const auth_route_1 = __importDefault(require("./Routes/auth.route"));
 const content_route_1 = __importDefault(require("./Routes/content.route"));
+const auth_1 = require("./middleware/auth");
 const app = (0, express_1.default)();
 mongoose.connect(process.env.MONGODB_URL);
 app.use(express_1.default.json());
 app.use("/api/v1/auth", auth_route_1.default);
-app.use("/api/v1/content", content_route_1.default);
+app.use("/api/v1/content", auth_1.auth, content_route_1.default);
 app.listen(process.env.PORT, () => {
     console.log(`Server running on http://localhost:${process.env.PORT}/`);
 });
