@@ -1,7 +1,6 @@
 import express from "express";
 import linkModel from "../models/link";
 import { JwtPayload } from "jsonwebtoken";
-import { hash } from "bcrypt";
 import { randomGen } from "../utils";
 export const share = async(req: express.Request, res: express.Response) => {
   const { sharable } = req.body;
@@ -10,16 +9,33 @@ export const share = async(req: express.Request, res: express.Response) => {
       message: "please provide the sharable object",
     });
   }
+  const hash = randomGen(10)
   const decoded = req.decoded;
   if (sharable) {
+    const existingLink = await linkModel.findOne({
+      userId: (decoded as JwtPayload).userId
+    });
+    
+    if (existingLink) {
+       res.json({
+        link: "/share/" + existingLink.hash
+      });
+      return
+    }
   await  linkModel.create({
       userId: (decoded as JwtPayload).userId,
-      hash: randomGen(10),
+      hash
     });
+    res.json({
+     link:"/share/"+hash
+    })
   } else {
    await linkModel.deleteOne({
       userId: (decoded as JwtPayload).userId,
     });
+    res.json({
+      message:"deleted link"
+    })
   }
 };
 export const goto =async(req: express.Request, res: express.Response)=>{
@@ -33,5 +49,5 @@ export const goto =async(req: express.Request, res: express.Response)=>{
     })
     return
   }
-  
+
 }

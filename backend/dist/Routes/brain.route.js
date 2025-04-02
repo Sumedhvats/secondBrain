@@ -4,9 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const content_controller_1 = require("../controllers/content.controller");
+const brain_controller_1 = require("../controllers/brain.controller");
 const router = express_1.default.Router();
-router.post("/deleteContent", content_controller_1.deleteContent);
-router.get("/Content", content_controller_1.content);
-router.post("/Content", content_controller_1.addContent);
+router.post("/share", brain_controller_1.share);
+router.get("/share", brain_controller_1.goto);
 exports.default = router;
