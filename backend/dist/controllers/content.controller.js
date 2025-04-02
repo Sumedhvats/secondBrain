@@ -27,7 +27,7 @@ const addContent = async (req, res) => {
             link,
             title,
             //@ts-ignore
-            userId: decoded.userId,
+            userId: decoded.id,
             tags: [tag._id],
         });
         res.status(201).json({ message: "Content added successfully", content: newContent });
@@ -38,16 +38,23 @@ const addContent = async (req, res) => {
 };
 exports.addContent = addContent;
 const content = async (req, res) => {
-    const decoded = req.decoded;
-    const contents = await content_1.default.find({ userId: decoded.userId }).lean();
-    if (contents.length == 0) {
-        res.status(400).json({
-            message: "no content for this user",
-        });
+    try {
+        const decoded = req.decoded;
+        const contents = await content_1.default.find({ userId: decoded.id }).lean();
+        if (contents.length == 0) {
+            res.status(400).json({
+                message: "no content for this user",
+            });
+        }
+        else {
+            res.json({
+                content: contents,
+            });
+        }
     }
-    else {
-        res.json({
-            content: contents,
+    catch (e) {
+        res.status(500).json({
+            message: "Internal Server error", e
         });
     }
 };
@@ -62,7 +69,7 @@ const deleteContent = async (req, res) => {
         }
         ///check this
         const decoded = req.decoded;
-        const deleted = await content_1.default.deleteOne({ _id: id, userId: decoded.userId });
+        const deleted = await content_1.default.deleteOne({ _id: id, userId: decoded.id });
         if (deleted.deletedCount) {
             res.status(200).json({
                 message: "successfully deleted content",

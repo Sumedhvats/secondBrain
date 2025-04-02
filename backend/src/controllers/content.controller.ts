@@ -30,7 +30,7 @@ export const addContent = async (
         link,
         title,
         //@ts-ignore
-        userId: decoded.userId, 
+        userId: decoded.id, 
         tags: [tag._id],
       });
     
@@ -42,8 +42,9 @@ export const addContent = async (
 };
 
 export const content = async (req: express.Request, res: express.Response) => {
+  try{
   const decoded = req.decoded;
-  const contents = await Content.find({ userId: ( decoded as JwtPayload).userId }).lean();
+  const contents = await Content.find({ userId: ( decoded as JwtPayload).id }).lean();
   if (contents.length == 0) {
     res.status(400).json({
       message: "no content for this user",
@@ -54,6 +55,11 @@ export const content = async (req: express.Request, res: express.Response) => {
     });
   }
 }
+catch(e){
+  res.status(500).json({
+    message:"Internal Server error",e
+  })
+}}
 
 
 export const deleteContent = async (
@@ -69,7 +75,7 @@ export const deleteContent = async (
   }
   ///check this
   const decoded = req.decoded;
-  const deleted = await Content.deleteOne({ _id: id, userId: (decoded as JwtPayload).userId });
+  const deleted = await Content.deleteOne({ _id: id, userId: (decoded as JwtPayload).id });
   if (deleted.deletedCount) {
     res.status(200).json({
       message: "successfully deleted content",

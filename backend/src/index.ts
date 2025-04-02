@@ -10,8 +10,8 @@ const app = express();
 mongoose.connect(process.env.MONGODB_URL)
 app.use(express.json());
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/content",auth, contentRouter);
-app.use("/api/v1/brain",auth,brain);
+app.use("/api/v1/content", contentRouter);
+app.use("/api/v1/brain",brain);
 
 
 
