@@ -1,5 +1,5 @@
     import mongoose from "mongoose";
-const contentTypes = ['image', 'video', 'article', 'audio','tweet']; // Extend as needed
+const contentTypes = ['image', 'video', 'article', 'audio','tweet','todo']; // Extend as needed
 const content = new mongoose.Schema(
     {
         link:{type:String},
