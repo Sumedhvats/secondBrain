@@ -1,8 +1,8 @@
-import { CardComponent } from "./ui/cardComponent"
+import { CardComponent } from "./cardComponent"
 
 export const Hero=()=>{
     return(
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-4 ">
         <CardComponent
         title="First card"
         type="tweet"
