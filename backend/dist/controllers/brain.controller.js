@@ -18,7 +18,6 @@ const share = async (req, res) => {
         }
         const hash = (0, utils_1.randomGen)(10);
         const decoded = req.decoded;
-        console.log("Decoded JWT:", req.decoded);
         if (sharable) {
             const existingLink = await link_1.default.findOne({
                 userId: decoded.id,
