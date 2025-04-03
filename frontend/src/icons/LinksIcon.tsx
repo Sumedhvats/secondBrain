@@ -11,8 +11,8 @@ export const LinksIcon = (props: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={iconVarients[props.size]}
-      height={iconVarients[props.size]}
+      width={iconVarients[props.size]|| 22}
+      height={iconVarients[props.size]|| 22}
       fill="currentColor"
      className="mr-2"
       viewBox="0 0 16 16"

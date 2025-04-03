@@ -1,24 +1,21 @@
 import { useState } from "react";
-import { PlusIcon } from "./icons/PlusIcon";
-
 import "./App.css";
-import { Button } from "./components/ui/button";
-import { DocumentIcon } from "./icons/DocumentIcon";
-import { SidebarItem } from "./components/ui/sidebarItem";
-import { TweetIcon } from "./icons/TweetIcon";
-
+import { SideBar } from "./components/ui/sideBar";
+import { Hero } from "./components/HeroComponent";
+import { TopBar } from "./components/ui/TopBar";
 
 function App() {
   const [count, setCount] = useState(0);
 
-  return <>
-  <Button type= {"primary"} size={"sm"} text="hwllo" startIcon={<DocumentIcon size="sm"/>} onclick={()=>{}}></Button>
-  <Button  type= {"secondary"} size={"md"} text="hwllo" startIcon={<DocumentIcon size="md"/>} onclick={()=>{}}></Button>
-  <Button type= {"secondary"} size={"lg"} text="hwllo" startIcon={<DocumentIcon size="lg"/>} onclick={()=>{}}></Button>
-
-  <SidebarItem text ="Twitter" icon ={<TweetIcon size="sm"/>} size="sm"></SidebarItem>
-  </>;
+  return (
+    <div className="flex h-screen">
+      <SideBar />
+      <div className="flex flex-col flex-1 px-6">
+        <TopBar />
+        <Hero />
+      </div>
+    </div>
+  );
 }
 
 export default App;
- 

@@ -4,6 +4,7 @@ interface sidebarItemProps {
   icon: ReactElement;
   text: string;
   size?: "lg" | "md" | "sm";
+  onclick:()=>void
 }
 const sizeValues = {
   sm: "rounded-lg pr-10 py-1 m-5 pl-3 ",
@@ -12,9 +13,9 @@ const sizeValues = {
 };
 export const SidebarItem = (props: sidebarItemProps) => {
   return (
-    <div className={`${sizeValues[props.size || "sm"]} flex items-center`}>
+    <button className={`${sizeValues[props.size || "sm"]} flex items-center`}>
       <div>{props.icon}</div>
       {props.text}
-    </div>
+    </button>
   );
 };
