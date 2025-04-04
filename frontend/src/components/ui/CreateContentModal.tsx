@@ -27,8 +27,8 @@ export const CreateContent = ({ open, setOpen }) => {
           </button>
         </div>
         <div className="">
-          <InputElement placeholder="Title" onChange={() => {}}></InputElement>
-          <InputElement placeholder="Link" onChange={() => {}}></InputElement>
+          <InputElement placeholder="Title" ></InputElement>
+          <InputElement placeholder="Link" ></InputElement>
         </div>
         <div className="flex justify-center pt-5">
         <Button type="primary" text="Add content" onclick={() => {}}></Button>
