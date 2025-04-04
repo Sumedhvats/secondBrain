@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Button } from "../components/ui/button";
 import { InputElement } from "../components/ui/Input";
-import { BACKEND_URL } from "../config";
+import { BACKENDURL } from "../config";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom"; // ✅ import Link
 
@@ -17,7 +17,7 @@ export const SignupComponent = () => {
     const password = passwordRef.current?.value;
 
     try {
-      const response = await axios.post(`${BACKEND_URL}/api/v1/auth/signup`, {
+      const response = await axios.post(`${BACKENDURL}/api/v1/auth/signup`, {
         username,
         password,
       });
