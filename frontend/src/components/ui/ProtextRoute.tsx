@@ -1,0 +1,11 @@
+
+import { ReactNode } from "react";
+import { Navigate, Outlet} from "react-router-dom";
+
+export const ProtectedRoute=({ children }: {children:ReactNode})=>{
+    const token = localStorage.getItem("token");
+    if(!token){
+      return  <Navigate to ="/signup"></Navigate>
+    }
+    return <>{children}</>
+}

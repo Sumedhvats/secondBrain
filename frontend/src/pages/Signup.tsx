@@ -1,22 +1,52 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "../components/ui/button";
 import { InputElement } from "../components/ui/Input";
+import { BACKEND_URL } from "../config";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom"; // ✅ import Link
+
 export const SignupComponent = () => {
   const [loading, setLoading] = useState(false);
-  const handleClick = () => {
+  const userNameRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+
+  const handleClick = async () => {
     setLoading(true);
-    setTimeout(() => {
+    const username = userNameRef.current?.value;
+    const password = passwordRef.current?.value;
+
+    try {
+      const response = await axios.post(`${BACKEND_URL}/api/v1/auth/signup`, {
+        username,
+        password,
+      });
+
+      alert(response.data.message || "Signup successful"); // ✅ success alert
+      navigate("/signin");
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        const errorMessage =
+          error.response?.data?.message ||
+          error.response?.data?.error ||
+          "Unknown error";
+        alert(`Error: ${errorMessage}`);
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } finally {
       setLoading(false);
-    }, 2000); // Simulating an async task
+    }
   };
+
   return (
-    <div className="w-screen h-screen  flex justify-center items-center">
-      <div className="bg-white rounded-lg shadow-lg  w-[800px] flex ">
-        <div className="w-1/2 pr-8 ">
+    <div className="w-screen h-screen flex justify-center items-center">
+      <div className="bg-white rounded-lg shadow-lg w-[800px] flex">
+        <div className="w-1/2 pr-8">
           <img
             src="/SignUpImage.png"
             alt="Night scene"
-            className="w-full rounded h-full "
+            className="w-full rounded-xl h-full"
           />
         </div>
         <div className="w-1/2 flex flex-col justify-center p-8">
@@ -26,41 +56,36 @@ export const SignupComponent = () => {
             Good Morning
           </h2>
           <h3 className="text-lg font-medium text-gray-700 mb-4">
-            Login your account
+            Create account
           </h3>
           <div className="mb-4">
             <InputElement
               placeholder="Username"
               type="text"
-              onChange={() => {}}
+              reference={userNameRef}
             />
           </div>
-          <div className="mb-2">
+          <div className="mb-8">
             <InputElement
               placeholder="Password"
               type="password"
-              onChange={() => {}}
+              reference={passwordRef}
             />
-          </div>
-          <div className="flex justify-end">
-            <a href="#" className="text-sm  text-[#7755c5] mb-4">
-              Forgot password?
-            </a>
           </div>
           <div className="w-full">
             <Button
               type="primary"
               size="md"
               onclick={handleClick}
-              text="Login "
+              text="Create account"
               loading={loading}
             />
           </div>
           <p className="text-sm text-gray-600 mt-4 text-center">
             Already Signed up?{" "}
-            <a href="#" className="text-[#7755c5]">
+            <Link to="/signin" className="text-[#7755c5]">
               SignIn
-            </a>
+            </Link>
           </p>
         </div>
       </div>
