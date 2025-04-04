@@ -1,4 +1,3 @@
-import { Ref } from "react";
 
 export const InputElement = ({
   placeholder,
