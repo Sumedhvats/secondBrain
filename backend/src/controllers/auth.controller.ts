@@ -91,9 +91,7 @@ export const signin = async (req: express.Request, res: express.Response) => {
       expiresIn: "24h",
     });
 
-    return res.status(200).set("Authorization", token).json({
-      message: "Signin successful",
-    });
+    return res.status(200).send({token:token});
   } catch (error) {
     console.error("Unexpected error: ", error);
     return res.status(500).json({ error: "Server error" });

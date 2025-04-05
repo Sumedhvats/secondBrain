@@ -83,9 +83,7 @@ const signin = async (req, res) => {
         const token = jsonwebtoken_1.default.sign({ id: user._id }, secret, {
             expiresIn: "24h",
         });
-        return res.status(200).set("Authorization", token).json({
-            message: "Signin successful",
-        });
+        return res.status(200).send({ token: token });
     }
     catch (error) {
         console.error("Unexpected error: ", error);

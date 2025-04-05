@@ -21,9 +21,11 @@ export const SigninComponent = () => {
         username,
         password,
       });
+      console.log(response)
 
       const jwt = response.data.token;
       localStorage.setItem("token", jwt);
+      console.log(jwt)
       navigate("/home");
     } catch (error: any) {
       if (axios.isAxiosError(error)) {

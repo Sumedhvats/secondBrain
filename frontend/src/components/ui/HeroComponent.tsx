@@ -17,12 +17,15 @@ export const Hero = () => {
   useEffect(() => {
     const fetchContent = async () => {
       const token = localStorage.getItem("token");
+      
+
       try {
-        const response = await axios.get(`${BACKENDURL}/api/v1/Content`, {
+        const response = await axios.get(`${BACKENDURL}/api/v1/content`, {
           headers: {
             Authorization: `${token}`,
           },
         });
+        
         setContents(response.data.content || []);
       } catch (error) {
         console.error("Error fetching content:", error);

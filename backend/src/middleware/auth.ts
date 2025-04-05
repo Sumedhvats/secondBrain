@@ -18,6 +18,7 @@ export const auth = (
   next: express.NextFunction
 ): void => {
   const authHeader = req.headers.authorization;
+  console.log(req.headers)
   if (!authHeader) {
     res.status(401).json({ error: "Access denied. No token provided." });
     return;
@@ -29,7 +30,7 @@ export const auth = (
   }
   
   try {
-    const decoded = jwt.verify(authHeader, secret);
+    const decoded = jwt.verify((authHeader as string), secret);
     req.decoded = decoded;
     next();
   } catch (error) {
