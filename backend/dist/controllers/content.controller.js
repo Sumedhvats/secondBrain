@@ -41,20 +41,17 @@ const content = async (req, res) => {
     try {
         const decoded = req.decoded;
         const contents = await content_1.default.find({ userId: decoded.id }).lean();
-        if (contents.length == 0) {
-            res.status(400).json({
-                message: "no content for this user",
-            });
+        if (contents.length === 0) {
+            res.status(200).json({ content: [] });
+            return;
         }
-        else {
-            res.json({
-                content: contents,
-            });
-        }
+        console.log(contents);
+        res.status(200).json({ content: contents });
     }
     catch (e) {
         res.status(500).json({
-            message: "Internal Server error", e
+            message: "Internal Server Error",
+            error: e,
         });
     }
 };

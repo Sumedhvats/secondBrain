@@ -31,7 +31,7 @@ export const auth = (
   try {
     const decoded = jwt.verify(authHeader, secret);
     req.decoded = decoded;
-    next(); // Call next() to proceed to the next middleware
+    next();
   } catch (error) {
     res.status(400).json({ error: "Invalid token." });
   }

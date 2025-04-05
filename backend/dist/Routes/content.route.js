@@ -8,6 +8,6 @@ const content_controller_1 = require("../controllers/content.controller");
 const auth_1 = require("../middleware/auth");
 const router = express_1.default.Router();
 router.post("/deleteContent", auth_1.auth, content_controller_1.deleteContent);
-router.get("/Content", auth_1.auth, content_controller_1.content);
-router.post("/Content", auth_1.auth, content_controller_1.addContent);
+router.get("/", auth_1.auth, content_controller_1.content);
+router.post("/", auth_1.auth, content_controller_1.addContent);
 exports.default = router;

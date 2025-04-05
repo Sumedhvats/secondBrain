@@ -1,7 +1,7 @@
 import express from "express";
 import z from "zod";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import User from "../models/users";
+import { JwtPayload } from "jsonwebtoken";
+
 import Content from "../models/content";
 import Tags from "../models/tags";
 
@@ -41,26 +41,26 @@ export const addContent = async (
   }
 };
 
+
 export const content = async (req: express.Request, res: express.Response) => {
-  try{
-  const decoded = req.decoded;
-  const contents = await Content.find({ userId: ( decoded as JwtPayload).id }).lean();
-  if (contents.length == 0) {
-    res.status(400).json({
-      message: "no content for this user",
-    });
-  } else {
-    res.json({
-      content: contents,
+  try {
+    const decoded = req.decoded;
+    const contents = await Content.find({ userId: (decoded as JwtPayload).id }).lean();
+
+    if (contents.length === 0) {
+       res.status(200).json({ content: [] }); 
+       return
+    }
+console.log(contents);
+
+    res.status(200).json({ content: contents });
+  } catch (e) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: e,
     });
   }
-}
-catch(e){
-  res.status(500).json({
-    message:"Internal Server error",e
-  })
-}}
-
+};
 
 export const deleteContent = async (
   req: express.Request,

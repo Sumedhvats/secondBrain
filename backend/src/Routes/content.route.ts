@@ -6,8 +6,8 @@ import { auth } from "../middleware/auth";
 const router = express.Router();
 
 router.post("/deleteContent",auth, deleteContent);
-router.get("/Content", auth,content);
-router.post("/Content", auth,addContent);
+router.get("/", auth,content);
+router.post("/", auth,addContent);
 
 
 export default router;
