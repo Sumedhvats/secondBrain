@@ -7,7 +7,6 @@ exports.auth = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const auth = (req, res, next) => {
     const authHeader = req.headers.authorization;
-    console.log(req.headers);
     if (!authHeader) {
         res.status(401).json({ error: "Access denied. No token provided." });
         return;
@@ -22,7 +21,16 @@ const auth = (req, res, next) => {
         next();
     }
     catch (error) {
-        res.status(400).json({ error: "Invalid token." });
+        if (error instanceof jsonwebtoken_1.default.JsonWebTokenError) {
+            res.status(401).json({ error: "Invalid token" });
+        }
+        else if (error instanceof jsonwebtoken_1.default.TokenExpiredError) {
+            res.status(401).json({ error: "Token expired" });
+        }
+        else {
+            console.error("Auth middleware error:", error);
+            res.status(500).json({ error: "Authentication failed" });
+        }
     }
 };
 exports.auth = auth;

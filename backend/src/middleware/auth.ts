@@ -18,7 +18,7 @@ export const auth = (
   next: express.NextFunction
 ): void => {
   const authHeader = req.headers.authorization;
-  console.log(req.headers)
+
   if (!authHeader) {
     res.status(401).json({ error: "Access denied. No token provided." });
     return;
@@ -34,6 +34,13 @@ export const auth = (
     req.decoded = decoded;
     next();
   } catch (error) {
-    res.status(400).json({ error: "Invalid token." });
+    if (error instanceof jwt.JsonWebTokenError) {
+      res.status(401).json({ error: "Invalid token" });
+    } else if (error instanceof jwt.TokenExpiredError) {
+       res.status(401).json({ error: "Token expired" });
+    } else {
+      console.error("Auth middleware error:", error);
+       res.status(500).json({ error: "Authentication failed" });
+    }
   }
-};
+}

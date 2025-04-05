@@ -7,5 +7,5 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const tags = new mongoose_1.default.Schema({
     title: { type: String, require: true }
 });
-const tagsModel = mongoose_1.default.model("Tags", tags);
+const tagsModel = mongoose_1.default.model("Tag", tags);
 exports.default = tagsModel;

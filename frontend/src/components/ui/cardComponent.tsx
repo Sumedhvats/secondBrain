@@ -8,7 +8,7 @@ import { VideoIcon } from "../../icons/videos";
 
 interface CardProps {
   title: string;
-  type: "image" | "video" | "article" | "audio" | "tweet" | "todo";
+  type: "image" | "video" | "article" | "audio" | "tweet" | "memory";
   tags: string[];
   date: string;
   link?: string;
@@ -20,7 +20,7 @@ const iconBasesOnType: Record<CardProps["type"], React.ElementType> = {
   article: LinksIcon,
   audio: VideoIcon,
   tweet: TweetIcon,
-  todo: DocumentIcon,
+  memory: DocumentIcon,
 };
 
 export const CardComponent = (props: CardProps) => {
