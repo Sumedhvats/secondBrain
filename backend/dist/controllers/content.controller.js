@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.content = exports.addContent = void 0;
+exports.deleteContent = exports.content = exports.addContent = void 0;
 const zod_1 = __importDefault(require("zod"));
 const content_1 = __importDefault(require("../models/content"));
 const tags_1 = __importDefault(require("../models/tags"));
@@ -93,30 +93,27 @@ const content = async (req, res) => {
 };
 exports.content = content;
 // ✅ Optional deleteContent function (still commented)
-/*
-export const deleteContent = async (
-  req: express.Request,
-  res: express.Response
-) => {
-  try {
-    const { id } = req.body;
-    if (!id) {
-      return res.status(400).json({ message: "No content ID provided" });
+const deleteContent = async (req, res) => {
+    try {
+        const { id } = req.body;
+        if (!id) {
+            res.status(400).json({ message: "No content ID provided" });
+            return;
+        }
+        const decoded = req.decoded;
+        const deleted = await content_1.default.deleteOne({
+            _id: id,
+            userId: decoded.id,
+        });
+        if (deleted.deletedCount) {
+            res.status(200).json({ message: "Content deleted successfully" });
+        }
+        else {
+            res.status(403).json({ message: "Unauthorized to delete this content" });
+        }
     }
-
-    const decoded = req.decoded;
-    const deleted = await Content.deleteOne({
-      _id: id,
-      userId: (decoded as JwtPayload).id,
-    });
-
-    if (deleted.deletedCount) {
-      res.status(200).json({ message: "Content deleted successfully" });
-    } else {
-      res.status(403).json({ message: "Unauthorized to delete this content" });
+    catch (e) {
+        res.status(500).json({ message: "Delete failed", error: e });
     }
-  } catch (e) {
-    res.status(500).json({ message: "Delete failed", error: e });
-  }
 };
-*/
+exports.deleteContent = deleteContent;

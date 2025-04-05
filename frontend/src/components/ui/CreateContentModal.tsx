@@ -30,10 +30,10 @@ export const CreateContent = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const linkRef = useRef<HTMLInputElement>(null);
   const tagsRef = useRef<HTMLInputElement>(null);
-  
+
   const detectContentType = (url: string) => {
     if (!url) return "article";
-    
+
     if (url.includes("youtube.com") || url.includes("youtu.be")) {
       return "video";
     } else if (url.includes("twitter.com") || url.includes("x.com")) {
@@ -43,32 +43,38 @@ export const CreateContent = () => {
     } else if (/\.(mp3|wav|ogg)$/i.test(url)) {
       return "audio";
     }
-    
+
     return "article";
   };
-  
+
   const handleLinkChange = () => {
     const link = linkRef.current?.value || "";
     const detectedType = detectContentType(link);
-    setFormData(prev => ({...prev, type: detectedType}));
+    setFormData((prev) => ({ ...prev, type: detectedType }));
   };
 
   const getAutomaticTags = (link: string, type: string, userTags: string) => {
-    const tags = userTags ? userTags.split(",").map(tag => tag.trim()) : [];
-    
-    if (type === "video" && (link.includes("youtube.com") || link.includes("youtu.be"))) {
+    const tags = userTags ? userTags.split(",").map((tag) => tag.trim()) : [];
+
+    if (
+      type === "video" &&
+      (link.includes("youtube.com") || link.includes("youtu.be"))
+    ) {
       if (!tags.includes("youtube")) {
         tags.push("youtube");
       }
-    } else if (type === "tweet" && (link.includes("twitter.com") || link.includes("x.com"))) {
+    } else if (
+      type === "tweet" &&
+      (link.includes("twitter.com") || link.includes("x.com"))
+    ) {
       if (!tags.includes("twitter")) {
         tags.push("twitter");
       }
     }
-    
+
     return tags.join(",");
   };
-  
+
   const addContent = async () => {
     setIsSubmitting(true);
     setError("");
@@ -77,7 +83,7 @@ export const CreateContent = () => {
     const title = titleRef.current?.value || "";
     const link = linkRef.current?.value || "";
     const userTags = tagsRef.current?.value || "";
-    
+
     if (!title.trim()) {
       setError("Title is required");
       setIsSubmitting(false);
@@ -99,35 +105,35 @@ export const CreateContent = () => {
       }
 
       const tags = getAutomaticTags(link, formData.type, userTags);
-      
+
       const payload = {
         title,
         link,
         type: formData.type,
-        tags
+        tags,
       };
 
       console.log("Sending payload:", payload);
       console.log("Auth token:", token);
-
+      //@ts-ignore
       const response = await axios.post(
         `${BACKENDURL}/api/v1/content`,
         payload,
         {
           headers: {
-            authorization: `${token}`, 
+            authorization: `${token}`,
             "Content-Type": "application/json",
           },
         }
       );
 
       setSuccess(true);
-      
+
       if (titleRef.current) titleRef.current.value = "";
       if (linkRef.current) linkRef.current.value = "";
       if (tagsRef.current) tagsRef.current.value = "";
-      setFormData(prev => ({...prev, type: "article"}));
-      
+      setFormData((prev) => ({ ...prev, type: "article" }));
+
       setTimeout(() => {
         setOpen(false);
         window.location.reload();
@@ -153,7 +159,7 @@ export const CreateContent = () => {
     if (open) {
       document.addEventListener("mousedown", handleOutsideClick);
     }
-    
+
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
@@ -176,11 +182,14 @@ export const CreateContent = () => {
 
   return (
     <div className="fixed inset-0 flex justify-end items-start  bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-xl shadow-lg w-96 mt-20 mr-6" ref={modalRef}>
+      <div
+        className="bg-white p-6 rounded-xl shadow-lg w-96 mt-20 mr-6"
+        ref={modalRef}
+      >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Add New Content</h2>
-          <button 
-            className="cursor-pointer hover:bg-gray-100 p-1 rounded-full" 
+          <button
+            className="cursor-pointer hover:bg-gray-100 p-1 rounded-full"
             onClick={() => setOpen(false)}
           >
             <CrossIcon />
@@ -200,25 +209,24 @@ export const CreateContent = () => {
         )}
 
         <div className="space-y-4">
-          <InputElement 
-            placeholder="Title" 
-            reference={titleRef}
-          />
-          
-          <InputElement 
-            placeholder="Link (URL)" 
+          <InputElement placeholder="Title" reference={titleRef} />
+
+          <InputElement
+            placeholder="Link (URL)"
             reference={linkRef}
             type="url"
             onBlur={handleLinkChange}
           />
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Content Type
             </label>
             <select
               value={formData.type}
-              onChange={(e) => setFormData({...formData, type: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, type: e.target.value })
+              }
               className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="article">Article</option>
@@ -229,29 +237,29 @@ export const CreateContent = () => {
               <option value="memory">Memory</option>
             </select>
           </div>
-          
-          <InputElement 
-            placeholder="Tags (comma separated)" 
+
+          <InputElement
+            placeholder="Tags (comma separated)"
             reference={tagsRef}
           />
-          
+
           {formData.type === "video" && (
             <div className="text-xs text-gray-500 italic">
               YouTube links will automatically be tagged with "youtube"
             </div>
           )}
-          
+
           {formData.type === "tweet" && (
             <div className="text-xs text-gray-500 italic">
               Twitter links will automatically be tagged with "twitter"
             </div>
           )}
         </div>
-          
+
         <div className="flex justify-center pt-5">
-          <Button 
-            type="primary" 
-            text={isSubmitting ? "Adding..." : "Add Content"} 
+          <Button
+            type="primary"
+            text={isSubmitting ? "Adding..." : "Add Content"}
             onclick={addContent}
           />
         </div>

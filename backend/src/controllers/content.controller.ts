@@ -104,7 +104,7 @@ console.log("Raw contents after populate:", JSON.stringify(contents, null, 2));
 };
 
 // ✅ Optional deleteContent function (still commented)
-/*
+
 export const deleteContent = async (
   req: express.Request,
   res: express.Response
@@ -112,7 +112,8 @@ export const deleteContent = async (
   try {
     const { id } = req.body;
     if (!id) {
-      return res.status(400).json({ message: "No content ID provided" });
+      res.status(400).json({ message: "No content ID provided" });
+      return
     }
 
     const decoded = req.decoded;
@@ -130,4 +131,4 @@ export const deleteContent = async (
     res.status(500).json({ message: "Delete failed", error: e });
   }
 };
-*/
+

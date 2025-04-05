@@ -10,4 +10,5 @@ const router = express_1.default.Router();
 // router.post("/deleteContent",auth, deleteContent);
 router.get("/", auth_1.auth, content_controller_1.content);
 router.post("/", auth_1.auth, content_controller_1.addContent);
+router.delete("/", auth_1.auth, content_controller_1.deleteContent);
 exports.default = router;
