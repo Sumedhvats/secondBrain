@@ -20,12 +20,13 @@ import { isNavVisible } from "../recoil/hamburger";
 
 export const SideBar = () => {
   const navigate = useNavigate();
-
+//@ts-ignore
   const [topBarTitle, setTopBarTitle] = useRecoilState(topTitle);
+  //@ts-ignore
   const [content, setContent] = useRecoilState<CardProps[]>(contentAtom);
   const isSmall = useRecoilValue(isSmallScreen);
   const [navVisible, setNavVisible] = useRecoilState(isNavVisible);
-
+//@ts-ignore
   const shouldShowSidebar = !isSmall || navVisible;
   const sidebarRef = useRef<HTMLDivElement>(null);
 
