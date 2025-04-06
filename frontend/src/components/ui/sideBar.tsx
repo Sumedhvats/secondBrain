@@ -18,11 +18,11 @@ export const SideBar = () => {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    setContent([]); // Optional: clear previous content while loading
+    setContent([]); 
 
     try {
       const response = await axios.get(
-        `${BACKENDURL}/api/v1/content?type=${type}`, // fixed the URL
+        `${BACKENDURL}/api/v1/content?type=${type}`, 
         {
           headers: {
             authorization: `${token}`,
