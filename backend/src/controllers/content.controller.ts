@@ -143,31 +143,29 @@ console.log("Raw contents after populate:", JSON.stringify(contents, null, 2));
   }
 };
 
-
 export const deleteContent = async (
   req: express.Request,
   res: express.Response
 ) => {
   try {
-    const { id } = req.body;
-    if (!id) {
-      res.status(400).json({ message: "No content ID provided" });
+    const { title } = req.body;
+    if (!title) {
+      res.status(400).json({ message: "No title provided" });
       return
     }
 
     const decoded = req.decoded;
     const deleted = await Content.deleteOne({
-      _id: id,
+      title: title,
       userId: (decoded as JwtPayload).id,
     });
 
     if (deleted.deletedCount) {
       res.status(200).json({ message: "Content deleted successfully" });
     } else {
-      res.status(403).json({ message: "Unauthorized to delete this content" });
+      res.status(403).json({ message: "Unauthorized or title not found" });
     }
   } catch (e) {
     res.status(500).json({ message: "Delete failed", error: e });
   }
 };
-

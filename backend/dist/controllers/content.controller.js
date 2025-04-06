@@ -128,21 +128,21 @@ const getByType = async (req, res) => {
 exports.getByType = getByType;
 const deleteContent = async (req, res) => {
     try {
-        const { id } = req.body;
-        if (!id) {
-            res.status(400).json({ message: "No content ID provided" });
+        const { title } = req.body;
+        if (!title) {
+            res.status(400).json({ message: "No title provided" });
             return;
         }
         const decoded = req.decoded;
         const deleted = await content_1.default.deleteOne({
-            _id: id,
+            title: title,
             userId: decoded.id,
         });
         if (deleted.deletedCount) {
             res.status(200).json({ message: "Content deleted successfully" });
         }
         else {
-            res.status(403).json({ message: "Unauthorized to delete this content" });
+            res.status(403).json({ message: "Unauthorized or title not found" });
         }
     }
     catch (e) {

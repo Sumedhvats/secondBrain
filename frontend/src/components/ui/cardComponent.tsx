@@ -5,6 +5,8 @@ import { LinksIcon } from "../../icons/LinksIcon";
 import { ShareIcon } from "../../icons/ShareIcon";
 import { TweetIcon } from "../../icons/TweetIcon";
 import { VideoIcon } from "../../icons/videos";
+import axios from "axios";
+import { BACKENDURL } from "../../config";
 
 interface CardProps {
   title: string;
@@ -50,10 +52,41 @@ export const CardComponent = (props: CardProps) => {
           {props.title}
         </div>
         <div className="flex gap-2">
-          <div className="transition hover:scale-110 cursor-pointer hover:text-black">
+          <div
+            className="transition hover:scale-110 cursor-pointer hover:text-black"
+            onClick={async () => {
+              const toCopy = props.link || props.title;
+
+              try {
+                await navigator.clipboard.writeText(toCopy);
+                alert("Link copied to clipboard!"); // Replace with toast if needed
+              } catch (err) {
+                console.error("Failed to copy:", err);
+                alert("Copy failed. Please try again.");
+              }
+            }}
+          >
             <ShareIcon size={"md"} />
           </div>
-          <div className="transition hover:scale-110 cursor-pointer hover:text-black">
+
+          <div
+            className="transition hover:scale-110 cursor-pointer hover:text-black"
+            onClick={async () => {
+              const token = localStorage.getItem("token");
+              if (!token) return alert("Not authenticated");
+
+              try {
+                await axios.delete(`${BACKENDURL}/api/v1/content`, {
+                  headers: { authorization: token },
+                  data: { title: props.title },
+                });
+                window.location.reload();
+              } catch (e) {
+                console.error("Failed to delete:", e);
+                alert("Delete failed.");
+              }
+            }}
+          >
             <DeleteIcon size="md" />
           </div>
         </div>
@@ -77,7 +110,7 @@ export const CardComponent = (props: CardProps) => {
           <Tweet
             id={extractTweetId(props.link) as string}
             //@ts-ignore*/
-            theme="light" 
+            theme="light"
             mode="default"
           />
         </div>
