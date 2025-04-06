@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { BrainIcon } from "../../icons/Brain";
- import { DocumentIcon } from "../../icons/DocumentIcon";
+import { DocumentIcon } from "../../icons/DocumentIcon";
 import { LinksIcon } from "../../icons/LinksIcon";
 // import { TagsIcon } from "../../icons/TagsIcon";
 import { TweetIcon } from "../../icons/TweetIcon";
@@ -19,11 +19,11 @@ export const SideBar = () => {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    setContent([]); 
+    setContent([]);
 
     try {
       const response = await axios.get(
-        `${BACKENDURL}/api/v1/content?type=${type}`, 
+        `${BACKENDURL}/api/v1/content?type=${type}`,
         {
           headers: {
             authorization: `${token}`,
@@ -42,9 +42,9 @@ export const SideBar = () => {
         <BrainIcon size={"lg"} />
         Second Brain
       </div>
-     
+
       <div>
-      <SidebarItem
+        <SidebarItem
           text="All items"
           icon={<DocumentIcon size="md" />}
           size="md"
@@ -68,7 +68,12 @@ export const SideBar = () => {
           size="md"
           onclick={() => getItemsByType("article")}
         />
-        {/* Future SidebarItems:
+        {}
+      </div>
+    </div>
+  );
+};
+/* Future SidebarItems:
         <SidebarItem
           text="Documents"
           icon={<DocumentIcon size="md" />}
@@ -81,8 +86,4 @@ export const SideBar = () => {
           size="md"
           onclick={() => getItemsByType("tag")}
         />
-        */}
-      </div>
-    </div>
-  );
-};
+        */
