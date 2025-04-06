@@ -41,7 +41,7 @@ export const CardComponent = (props: CardProps) => {
   };
 
   return (
-    <div className="bg-white rounded-md shadow-md p-4 outline-slate-200 min-h-48 max-h-max w-90 ">
+    <div className="bg-white rounded-md shadow-md p-4 outline-slate-200 min-h-48 max-h-max md:w-90 w-full ">
       <div className="flex justify-between items-center text-slate-500 mb-3">
         <div>
           <IconComponent className="w-6 h-6" />

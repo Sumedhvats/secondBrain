@@ -16,7 +16,7 @@ const variant = {
 };
 
 const size = {
-  sm: "rounded-lg pr-4 py-1 pl-3 ",
+  sm: "rounded-lg pr-4 py-1 pl-3",
   md: "rounded-xl px-10 py-2.5 text-lg shadow-lg",
   lg: "rounded-2xl pr-14 py-4 text-3xl pl-6",
 };
