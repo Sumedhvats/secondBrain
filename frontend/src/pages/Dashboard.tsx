@@ -6,6 +6,7 @@ import { TopBar } from "../components/ui/TopBar";
 import { CreateContent } from "../components/ui/CreateContentModal";
 
 function Dashboard() {
+  //@ts-ignore
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
 
   

@@ -12,6 +12,7 @@ import axios from "axios";
 import { BACKENDURL } from "../../config";
 
 export const SideBar = () => {
+  //@ts-ignore
   const [content, setContent] = useRecoilState<CardProps[]>(contentAtom);
 
   const getItemsByType = async (type: string) => {
