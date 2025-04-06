@@ -1,5 +1,5 @@
 import express from "express";
-import { signin, signup } from "../controllers/auth.controller";
+import { isValid, signin, signup } from "../controllers/auth.controller";
 
 
 
@@ -8,5 +8,6 @@ const router = express.Router();
 router.post("/signup", signup);
 //@ts-ignore
 router.post("/signin", signin);
+router.post("/isValid", isValid);
 
 export default router;  

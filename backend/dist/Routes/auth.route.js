@@ -10,4 +10,5 @@ const router = express_1.default.Router();
 router.post("/signup", auth_controller_1.signup);
 //@ts-ignore
 router.post("/signin", auth_controller_1.signin);
+router.post("/isValid", auth_controller_1.isValid);
 exports.default = router;

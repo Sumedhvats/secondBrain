@@ -1,15 +1,33 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "../components/ui/button";
 import { InputElement } from "../components/ui/Input";
 import { BACKENDURL } from "../config";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
-export const SigninComponent = () => {
+export const SigninComponent =  () => {
+  const navigate = useNavigate();
+  useEffect(()=>{
+  const isValid= async ()=>{
+
+    const token = localStorage.getItem("token");
+    try {
+      const res = await axios.post(`${BACKENDURL}/api/v1/auth/isValid`,{}, {
+        headers: {
+          authorization: `${token}`,
+        },
+      });
+      if (res.data.isValid) {
+        navigate("/home");
+      }
+    } catch {}
+  }
+
+    isValid()
+  },[navigate])
   const [loading, setLoading] = useState(false);
   const userNameRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
 
   const handleClick = async () => {
     setLoading(true);
@@ -21,11 +39,11 @@ export const SigninComponent = () => {
         username,
         password,
       });
-      console.log(response)
+      console.log(response);
 
       const jwt = response.data.token;
       localStorage.setItem("token", jwt);
-      console.log(jwt)
+      console.log(jwt);
       navigate("/home");
     } catch (error: any) {
       if (axios.isAxiosError(error)) {

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteContent = exports.content = exports.addContent = void 0;
+exports.deleteContent = exports.getByType = exports.content = exports.addContent = void 0;
 const zod_1 = __importDefault(require("zod"));
 const content_1 = __importDefault(require("../models/content"));
 const tags_1 = __importDefault(require("../models/tags"));
@@ -92,7 +92,40 @@ const content = async (req, res) => {
     }
 };
 exports.content = content;
-// ✅ Optional deleteContent function (still commented)
+const getByType = async (req, res) => {
+    try {
+        const decoded = req.decoded;
+        const contents = await content_1.default.find({ userId: decoded.id, type: req.query.type })
+            .populate("tags", "title");
+        console.log("Raw contents after populate:", JSON.stringify(contents, null, 2));
+        if (contents.length === 0) {
+            res.status(200).json({ content: [] });
+            return;
+        }
+        const formatDate = (date) => {
+            const d = new Date(date);
+            return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+        };
+        const transformedContents = contents.map((doc) => {
+            const content = doc.toObject();
+            return {
+                ...content,
+                tags: (content.tags || []).map((tag) => tag.title),
+                createdAt: formatDate(content.createdAt),
+            };
+        });
+        console.log(transformedContents);
+        res.status(200).json({ content: transformedContents });
+    }
+    catch (e) {
+        console.error("Error in content controller:", e);
+        res.status(500).json({
+            message: "Internal Server Error",
+            error: e instanceof Error ? e.message : e,
+        });
+    }
+};
+exports.getByType = getByType;
 const deleteContent = async (req, res) => {
     try {
         const { id } = req.body;

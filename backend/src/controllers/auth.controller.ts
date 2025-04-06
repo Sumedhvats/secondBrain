@@ -97,3 +97,32 @@ export const signin = async (req: express.Request, res: express.Response) => {
     return res.status(500).json({ error: "Server error" });
   }
 };
+
+export const isValid =(req: express.Request, res: express.Response)=>{
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader) {
+    res.status(201).json({ isValid:false});
+    return;
+  }
+  
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error("JWT_SECRET is not defined in the environment variables.");
+  }
+  
+  try {
+    const decoded = jwt.verify((authHeader as string), secret);
+    res.status(201).json({ isValid:true});
+
+  } catch (error) {
+    if (error instanceof jwt.JsonWebTokenError) {
+      res.status(401).json({ isValid:false});
+    } else if (error instanceof jwt.TokenExpiredError) {
+       res.status(401).json({ isValid:false});
+    } else {
+      console.error("Auth middleware error:", error);
+       res.status(500).json({ isValid:false});
+    }
+  }
+}

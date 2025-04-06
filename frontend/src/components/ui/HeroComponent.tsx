@@ -32,10 +32,10 @@ export const Hero = () => {
           authorization: `${token}`,
         },
       });
-      console.log(response);
+
       
       setContents(response.data.content || []);
-      console.log(response.data.content);
+
       
       setLoading(false);
     } catch (error) {
@@ -73,7 +73,7 @@ export const Hero = () => {
           key={content._id}
           title={content.title}
           type={content.type}
-          tags={content.tags} // Now contains tag titles instead of IDs
+          tags={content.tags} 
           date={new Date(content.createdAt).toLocaleDateString("en-GB")}
           link={content.link}
         />

@@ -102,8 +102,47 @@ console.log("Raw contents after populate:", JSON.stringify(contents, null, 2));
     });
   }
 };
+export const getByType = async (req: express.Request, res: express.Response) => {
+  try {
+    const decoded = req.decoded;
 
-// ✅ Optional deleteContent function (still commented)
+    const contents = await Content.find({ userId: (decoded as JwtPayload).id ,type:req.query.type })
+    .populate("tags", "title");
+console.log("Raw contents after populate:", JSON.stringify(contents, null, 2));
+    if (contents.length === 0) {
+      
+      res.status(200).json({ content: [] });
+      return
+    }
+    
+    
+    const formatDate = (date: Date): string => {
+      const d = new Date(date);
+      return `${d.getDate().toString().padStart(2, '0')}/${
+        (d.getMonth() + 1).toString().padStart(2, '0')
+      }/${d.getFullYear()}`;
+    };
+    
+    const transformedContents = contents.map((doc) => {
+      const content = doc.toObject();
+      return {
+        ...content,
+        tags: (content.tags || []).map((tag: any) => tag.title),
+        createdAt: formatDate(content.createdAt),
+      };
+    });
+    console.log(transformedContents);
+
+    res.status(200).json({ content: transformedContents });
+  } catch (e) {
+    console.error("Error in content controller:", e);
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: e instanceof Error ? e.message : e,
+    });
+  }
+};
+
 
 export const deleteContent = async (
   req: express.Request,

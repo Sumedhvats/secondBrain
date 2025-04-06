@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signin = exports.signup = void 0;
+exports.isValid = exports.signin = exports.signup = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const zod_1 = __importDefault(require("zod"));
 const users_1 = __importDefault(require("../models/users"));
@@ -91,3 +91,31 @@ const signin = async (req, res) => {
     }
 };
 exports.signin = signin;
+const isValid = (req, res) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        res.status(201).json({ isValid: false });
+        return;
+    }
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+        throw new Error("JWT_SECRET is not defined in the environment variables.");
+    }
+    try {
+        const decoded = jsonwebtoken_1.default.verify(authHeader, secret);
+        res.status(201).json({ isValid: true });
+    }
+    catch (error) {
+        if (error instanceof jsonwebtoken_1.default.JsonWebTokenError) {
+            res.status(401).json({ isValid: false });
+        }
+        else if (error instanceof jsonwebtoken_1.default.TokenExpiredError) {
+            res.status(401).json({ isValid: false });
+        }
+        else {
+            console.error("Auth middleware error:", error);
+            res.status(500).json({ isValid: false });
+        }
+    }
+};
+exports.isValid = isValid;
