@@ -1,9 +1,8 @@
-// In your auth.ts file
+
 import express from "express";
 import jwt from "jsonwebtoken";
 import { JwtPayload } from "jsonwebtoken";
 
-// Extend Express Request type
 declare global {
   namespace Express {
     interface Request {

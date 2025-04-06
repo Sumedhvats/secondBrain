@@ -13,7 +13,7 @@ const sizeValues = {
 };
 export const SidebarItem = (props: sidebarItemProps) => {
   return (
-    <button  className={`${sizeValues[props.size || "sm"]} flex items-center cursor-pointer hover:scale-110 transition` }>
+    <button onClick={props.onclick} className={`${sizeValues[props.size || "sm"]} flex items-center cursor-pointer hover:scale-110 transition` }>
       <div>{props.icon}</div>
       {props.text}
     </button>

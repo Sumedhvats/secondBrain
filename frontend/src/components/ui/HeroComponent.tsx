@@ -2,18 +2,20 @@ import { useEffect, useState } from "react";
 import { BACKENDURL } from "../../config";
 import { CardComponent } from "./cardComponent";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { contentAtom } from "../recoil/content";
 
-interface CardProps {
-  _id: string; // Add ID for deletion functionality
+export interface CardProps {
+  _id: string; 
   type: "image" | "video" | "article" | "audio" | "tweet" | "memory";
   title: string;
   tags: string[];
-  createdAt: string; // Match MongoDB date field name
+  createdAt: string; 
   link: string | undefined;
 }
 
 export const Hero = () => {
-  const [contents, setContents] = useState<CardProps[]>([]);
+  const [contents, setContents] = useRecoilState<CardProps[]>(contentAtom);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -68,6 +70,10 @@ export const Hero = () => {
 
   return (
     <div className="flex flex-wrap gap-4">
+       <div>
+              <div className="sr-only">.</div>
+              <div className="absolute left-0 bottom-0 bold [font-size: clamp(1rem,6rem)]"></div>
+            </div>
       {contents.map((content) => (
         <CardComponent
           key={content._id}
