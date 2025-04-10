@@ -7,6 +7,7 @@ import { TweetIcon } from "../../icons/TweetIcon";
 import { VideoIcon } from "../../icons/videos";
 import axios from "axios";
 import { BACKENDURL } from "../../config";
+import { useEffect } from "react";
 
 interface CardProps {
   title: string;
@@ -28,6 +29,21 @@ const iconBasesOnType: Record<CardProps["type"], React.ElementType> = {
 export const CardComponent = (props: CardProps) => {
   const IconComponent = iconBasesOnType[props.type] || DocumentIcon;
 
+  // Load Reddit embed script if needed
+  useEffect(() => {
+    if (props.type === "article" && props.link && props.link.includes("reddit.com")) {
+      const script = document.createElement("script");
+      script.src = "https://embed.reddit.com/widgets.js";
+      script.async = true;
+      script.charset = "UTF-8";
+      document.body.appendChild(script);
+      
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  }, [props.type, props.link]);
+
   const getYouTubeEmbedUrl = (url?: string): string => {
     if (!url) return "";
 
@@ -41,6 +57,8 @@ export const CardComponent = (props: CardProps) => {
 
     return url;
   };
+
+  const isRedditLink = props.link?.includes("reddit.com");
 
   return (
     <div className="bg-white rounded-md shadow-md p-4 outline-slate-200 min-h-48 max-h-max md:w-90 w-full ">
@@ -115,19 +133,39 @@ export const CardComponent = (props: CardProps) => {
           />
         </div>
       )}
-      {1 && (
-        <div className="text-sm text-slate-500">
-          {props.tags.map((tag, index) => (
-            <span
-              key={index}
-              className="mr-2 bg-[#e0e7ff] text-[#7755c5]  px-2 py-1 rounded"
+      
+      {props.type === "article" && props.link && (
+        <div className="w-full mt-2 mb-2">
+          {isRedditLink ? (
+            <div>
+              <blockquote className="reddit-embed-bq" data-embed-height="300">
+                <a href={props.link}>View on Reddit</a>
+              </blockquote>
+            </div>
+          ) : (
+            <a
+              href={props.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline break-words"
             >
-              #{tag}
-            </span>
-          ))}
-          <div className="mt-4">Added on {props.date}</div>
+              {props.link}
+            </a>
+          )}
         </div>
       )}
+      
+      <div className="text-sm text-slate-500">
+        {props.tags.map((tag, index) => (
+          <span
+            key={index}
+            className="mr-2 bg-[#e0e7ff] text-[#7755c5]  px-2 py-1 rounded"
+          >
+            #{tag}
+          </span>
+        ))}
+        <div className="mt-4">Added on {props.date}</div>
+      </div>
     </div>
   );
 };
