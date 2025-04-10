@@ -75,11 +75,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Thanks to the knowledge management community for continuous insights and improvements
 
 ---
-
-*Note: This is a personal knowledge management system template. Customize it to fit your specific workflow and needs.*
-
-Citations:
-[1] https://github.com/sumedhvats/secondBrain
-
----
-Answer from Perplexity: pplx.ai/share
