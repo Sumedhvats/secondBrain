@@ -69,7 +69,7 @@ export const Hero = () => {
   }
 
   return (
-    <div className="flex flex-wrap pl-4 gap-4">
+    <div className="">
       {contents.map((content) => (
         <CardComponent
           key={content._id}
