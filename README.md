@@ -14,52 +14,110 @@ Second Brain is a digital framework that allows you to capture, organize, and re
 - **Search Functionality**: Find information quickly when you need it
 - **Knowledge Synthesis**: Combine ideas to generate new insights
 
+## Technologies Used
+
+### Backend
+
+- Node.js with Express
+- TypeScript
+- MongoDB with Mongoose
+- JSON Web Tokens (JWT) for authentication
+- Bcrypt for password hashing
+- Zod for schema validation
+- dotenv for environment variable management
+
+### Frontend
+
+- React with TypeScript
+- Vite as build tool and development server
+- Tailwind CSS for styling
+- React Router for routing
+- Recoil for state management
+- Axios for HTTP requests
+
 ## Getting Started
 
 ### Prerequisites
 
-- Git
-- A text editor or note-taking app of your choice
-- Basic understanding of Markdown (recommended)
+- Node.js (v16 or higher recommended)
+- npm (comes with Node.js)
+- MongoDB instance (local or cloud)
 
-### Installation
+### Backend Setup
 
-1. Clone the repository:
+1. Navigate to the backend directory:
 ```bash
-git clone https://github.com/sumedhvats/secondBrain.git
+cd backend
 ```
 
-2. Navigate to the project directory:
+2. Install dependencies:
 ```bash
-cd secondBrain
+npm install
 ```
 
-3. Customize the folder structure to fit your needs.
+3. Create a `.env` file in the `backend` directory and add necessary environment variables, for example:
+```
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+PORT=5000
+```
+
+4. Build the backend TypeScript code:
+```bash
+npm run build
+```
+
+5. Start the backend server:
+```bash
+npm start
+```
+
+Alternatively, you can run the backend in one step (build and start):
+```bash
+npm run dev
+```
+
+The backend server will run on the port specified in your `.env` file (default 5000).
+
+### Frontend Setup
+
+1. Navigate to the frontend directory:
+```bash
+cd frontend
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+This will start the frontend on a local development server (usually http://localhost:5173).
+
+4. To build the frontend for production:
+```bash
+npm run build
+```
+
+5. To preview the production build locally:
+```bash
+npm run preview
+```
+
+## Folder Structure
+
+- `backend/`: Backend source code, including controllers, routes, models, and middleware
+- `frontend/`: Frontend React application source code, components, pages, and assets
+- `README.md`: Project overview and setup instructions
+- `netlify.toml`: Configuration for Netlify deployment (if applicable)
 
 ## Usage
 
-### Folder Structure
-
-The repository follows a structured organization:
-
-- **Areas**: Long-term responsibilities (health, finances, professional development)
-- **Resources**: Topic-based information (programming languages, book notes)
-- **Projects**: Time-bound initiatives with specific goals
-- **Archive**: Completed projects and outdated information
-
-### Adding Notes
-
-1. Identify the appropriate category for your note
-2. Create a new Markdown file in the relevant folder
-3. Use consistent formatting for easy scanning
-4. Add tags for cross-referencing
-
-### Best Practices
-
-- Review and organize notes weekly
-- Create connections between related ideas
-- Regularly archive completed projects
-- Use consistent naming conventions
+This project serves as a personal knowledge management system where you can capture, organize, and retrieve notes and information efficiently. Use the frontend interface to interact with your data, and the backend handles data storage and authentication.
 
 ## Contributing
 
@@ -73,5 +131,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - Inspired by Tiago Forte's Building a Second Brain methodology
 - Thanks to the knowledge management community for continuous insights and improvements
-
----
