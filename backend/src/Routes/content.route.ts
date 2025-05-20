@@ -1,5 +1,6 @@
 import express from "express";
 import {addContent,content, deleteContent,getByType} from "../controllers/content.controller";
+import {search} from "../controllers/search.controller";
 import { auth } from "../middleware/auth";
 
 
@@ -17,6 +18,7 @@ router.get("/", auth, (req, res) => {
 router.post("/", auth,addContent);
 router.delete("/", auth,deleteContent);
 router.post("/:type", auth,getByType);
+router.post("/:searchParam", auth,search);
 
 
 
