@@ -40,8 +40,8 @@ export const SignupComponent = () => {
   };
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
-      <div className="bg-white rounded-lg shadow-lg w-[800px] flex">
+    <div className="w-screen h-screen flex justify-center items-center bg-gradient-to-br from-[rgb(var(--color-bg-secondary))] to-[rgb(var(--color-bg-tertiary))]">
+      <div className="bg-[rgb(var(--color-bg-primary))] rounded-2xl shadow-2xl w-[800px] flex overflow-hidden border border-[rgb(var(--color-border))]">
         <div className="w-1/2 pr-8">
           <img
             src="/SignUpImage.png"
@@ -50,12 +50,12 @@ export const SignupComponent = () => {
           />
         </div>
         <div className="w-1/2 flex flex-col justify-center p-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">
+          <h2 className="text-2xl font-semibold text-[rgb(var(--color-text-primary))] mb-6">
             Hello!
             <br />
             Good Morning
           </h2>
-          <h3 className="text-lg font-medium text-gray-700 mb-4">
+          <h3 className="text-lg font-medium text-[rgb(var(--color-text-secondary))] mb-4">
             Create account
           </h3>
           <div className="mb-4">
@@ -81,9 +81,9 @@ export const SignupComponent = () => {
               loading={loading}
             />
           </div>
-          <p className="text-sm text-gray-600 mt-4 text-center">
+          <p className="text-sm text-[rgb(var(--color-text-secondary))] mt-4 text-center">
             Already Signed up?{" "}
-            <Link to="/signin" className="text-[#7755c5]">
+            <Link to="/signin" className="text-[rgb(var(--color-primary))] font-semibold hover:underline">
               SignIn
             </Link>
           </p>

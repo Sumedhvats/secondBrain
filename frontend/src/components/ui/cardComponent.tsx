@@ -8,6 +8,7 @@ import { VideoIcon } from "../../icons/videos";
 import axios from "axios";
 import { BACKENDURL } from "../../config";
 import { useEffect } from "react";
+import { useToast } from "../../hooks/useToast";
 
 interface CardProps {
   title: string;
@@ -28,6 +29,7 @@ const iconBasesOnType: Record<CardProps["type"], React.ElementType> = {
 
 export const CardComponent = (props: CardProps) => {
   const IconComponent = iconBasesOnType[props.type] || DocumentIcon;
+  const { addToast } = useToast();
 
   // Load Reddit embed script if needed
   useEffect(() => {
@@ -37,7 +39,7 @@ export const CardComponent = (props: CardProps) => {
       script.async = true;
       script.charset = "UTF-8";
       document.body.appendChild(script);
-      
+
       return () => {
         document.body.removeChild(script);
       };
@@ -61,52 +63,58 @@ export const CardComponent = (props: CardProps) => {
   const isRedditLink = props.link?.includes("reddit.com");
 
   return (
-    <div className="bg-white rounded-md shadow-md p-4 outline-slate-200 min-h-48 max-h-max md:w-90 w-full break-inside-avoid ">
-      <div className="flex justify-between items-center text-slate-500 mb-3">
+    <div className="glass-subtle rounded-xl p-5 w-full mb-4 break-inside-avoid transition-all duration-300 hover:shadow-xl hover:shadow-[rgb(var(--color-primary))]/10 hover:-translate-y-1 hover:scale-[1.01] border border-[rgb(var(--color-border))] hover:border-[rgb(var(--color-primary))]/30">
+      <div className="flex justify-between items-center text-[rgb(var(--color-text-secondary))] mb-4">
         <div>
           <IconComponent className="w-6 h-6" />
         </div>
-        <div className="flex-1 mx-2 text-center font-medium truncate">
+        <div className="flex-1 mx-3 text-center font-semibold truncate text-[rgb(var(--color-text-primary))]">
           {props.title}
         </div>
         <div className="flex gap-2">
-          <div
-            className="transition hover:scale-110 cursor-pointer hover:text-black"
+          <button
+            className="p-2 rounded-lg transition-all duration-200 hover:bg-[rgb(var(--color-bg-tertiary))] text-[rgb(var(--color-text-secondary))] hover:text-[rgb(var(--color-primary))] focus-ring"
             onClick={async () => {
               const toCopy = props.link || props.title;
 
               try {
                 await navigator.clipboard.writeText(toCopy);
-                alert("Link copied to clipboard!"); // Replace with toast if needed
+                addToast("Link copied to clipboard!", "success");
               } catch (err) {
                 console.error("Failed to copy:", err);
-                alert("Copy failed. Please try again.");
+                addToast("Copy failed. Please try again.", "error");
               }
             }}
+            aria-label="Copy link"
           >
             <ShareIcon size={"md"} />
-          </div>
+          </button>
 
-          <div
-            className="transition hover:scale-110 cursor-pointer hover:text-black"
+          <button
+            className="p-2 rounded-lg transition-all duration-200 hover:bg-red-50 dark:hover:bg-red-900/20 text-[rgb(var(--color-text-secondary))] hover:text-[rgb(var(--color-error))] focus-ring"
             onClick={async () => {
               const token = localStorage.getItem("token");
-              if (!token) return alert("Not authenticated");
+              if (!token) {
+                addToast("Not authenticated", "error");
+                return;
+              }
 
               try {
                 await axios.delete(`${BACKENDURL}/api/v1/content`, {
                   headers: { authorization: token },
                   data: { title: props.title },
                 });
-                window.location.reload();
+                addToast("Content deleted successfully", "success");
+                setTimeout(() => window.location.reload(), 500);
               } catch (e) {
                 console.error("Failed to delete:", e);
-                alert("Delete failed.");
+                addToast("Delete failed. Please try again.", "error");
               }
             }}
+            aria-label="Delete content"
           >
             <DeleteIcon size="md" />
-          </div>
+          </button>
         </div>
       </div>
 
@@ -133,7 +141,7 @@ export const CardComponent = (props: CardProps) => {
           />
         </div>
       )}
-      
+
       {props.type === "article" && props.link && (
         <div className="w-full mt-2 mb-2">
           {isRedditLink ? (
@@ -154,17 +162,19 @@ export const CardComponent = (props: CardProps) => {
           )}
         </div>
       )}
-      
-      <div className="text-sm text-slate-500">
-        {props.tags.map((tag, index) => (
-          <span
-            key={index}
-            className="mr-2 bg-[#e0e7ff] text-[#7755c5]  px-2 py-1 rounded"
-          >
-            #{tag}
-          </span>
-        ))}
-        <div className="mt-4">Added on {props.date}</div>
+
+      <div className="text-sm text-[rgb(var(--color-text-secondary))] mt-3">
+        <div className="flex flex-wrap gap-2 mb-2">
+          {props.tags.map((tag, index) => (
+            <span
+              key={index}
+              className="bg-gradient-to-r from-[rgb(var(--color-primary-light))] to-[rgb(var(--color-accent-light))] text-[rgb(var(--color-primary))] px-3 py-1.5 rounded-lg text-xs font-semibold shadow-sm"
+            >
+              #{tag}
+            </span>
+          ))}
+        </div>
+        <div className="text-xs">Added on {props.date}</div>
       </div>
     </div>
   );

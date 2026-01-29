@@ -9,7 +9,7 @@ function Dashboard() {
   //@ts-ignore
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
 
-  
+
   const handleOpenModal = () => {
     setModalOpen(true);
   };
@@ -17,9 +17,9 @@ function Dashboard() {
   return (
     <>
       <CreateContent />
-      <div className="flex h-screen ">
+      <div className="flex h-screen bg-[rgb(var(--color-bg-secondary))]">
         <SideBar />
-        <div className="flex flex-col flex-1  bg-slate-100 h-screen overflow-y-auto pb-5 ">
+        <div className="flex flex-col flex-1 h-screen overflow-y-auto pb-5">
           <TopBar onClick1={handleOpenModal} />
           <Hero />
         </div>

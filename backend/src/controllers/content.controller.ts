@@ -9,9 +9,10 @@ const contentSchema = z.object({
   link: z.string().url(),
   type: z.enum(["image", "video", "article", "audio", "tweet", "memory"]),
   title: z.string().min(1, "Title is required"),
+  description: z.string().optional(),
   tags: z.union([
-    z.string(),                
-    z.array(z.string().min(1))   
+    z.string(),
+    z.array(z.string().min(1))
   ]),
   userId: z.string().regex(/^[a-fA-F0-9]{24}$/, "Invalid ObjectId"),
 });
@@ -21,7 +22,7 @@ export const addContent = async (
   res: express.Response
 ) => {
   try {
-    const { type, link, title, tags } = req.body;
+    const { type, link, title, description, tags } = req.body;
     const decoded = req.decoded;
 
     let tagArray: string[] = [];
@@ -44,6 +45,7 @@ export const addContent = async (
       type,
       link,
       title,
+      description,
       //@ts-ignore
       userId: decoded.id,
       tags: tagIds,
@@ -67,22 +69,21 @@ export const content = async (req: express.Request, res: express.Response) => {
     const decoded = req.decoded;
 
     const contents = await Content.find({ userId: (decoded as JwtPayload).id })
-    .populate("tags", "title");
-console.log("Raw contents after populate:", JSON.stringify(contents, null, 2));
+      .populate("tags", "title");
+    console.log("Raw contents after populate:", JSON.stringify(contents, null, 2));
     if (contents.length === 0) {
-      
+
       res.status(200).json({ content: [] });
       return
     }
-    
-    
+
+
     const formatDate = (date: Date): string => {
       const d = new Date(date);
-      return `${d.getDate().toString().padStart(2, '0')}/${
-        (d.getMonth() + 1).toString().padStart(2, '0')
-      }/${d.getFullYear()}`;
+      return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')
+        }/${d.getFullYear()}`;
     };
-    
+
     const transformedContents = contents.map((doc) => {
       const content = doc.toObject();
       return {
@@ -106,23 +107,22 @@ export const getByType = async (req: express.Request, res: express.Response) => 
   try {
     const decoded = req.decoded;
 
-    const contents = await Content.find({ userId: (decoded as JwtPayload).id ,type:req.query.type })
-    .populate("tags", "title");
-console.log("Raw contents after populate:", JSON.stringify(contents, null, 2));
+    const contents = await Content.find({ userId: (decoded as JwtPayload).id, type: req.query.type })
+      .populate("tags", "title");
+    console.log("Raw contents after populate:", JSON.stringify(contents, null, 2));
     if (contents.length === 0) {
-      
+
       res.status(200).json({ content: [] });
       return
     }
-    
-    
+
+
     const formatDate = (date: Date): string => {
       const d = new Date(date);
-      return `${d.getDate().toString().padStart(2, '0')}/${
-        (d.getMonth() + 1).toString().padStart(2, '0')
-      }/${d.getFullYear()}`;
+      return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')
+        }/${d.getFullYear()}`;
     };
-    
+
     const transformedContents = contents.map((doc) => {
       const content = doc.toObject();
       return {

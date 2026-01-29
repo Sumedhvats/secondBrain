@@ -4,18 +4,35 @@ interface sidebarItemProps {
   icon: ReactElement;
   text: string;
   size?: "lg" | "md" | "sm";
-  onclick:()=>void
+  onclick: () => void;
+  active?: boolean;
 }
+
 const sizeValues = {
-  sm: "rounded-lg pr-10 py-1 m-5 pl-3 ",
-  md: "rounded-xl pr-14 py-2.5 text-2xl m-5 pl-4.5",
-  lg: "rounded-2xl pr-18 py-4 text-3xl m-5 pl-6",
+  sm: "px-4 py-2.5 text-base",
+  md: "px-5 py-3 text-lg",
+  lg: "px-6 py-4 text-xl",
 };
+
 export const SidebarItem = (props: sidebarItemProps) => {
   return (
-    <button onClick={props.onclick} className={`${sizeValues[props.size || "sm"]} flex items-center cursor-pointer hover:scale-110 transition` }>
-      <div>{props.icon}</div>
-      {props.text}
+    <button
+      onClick={props.onclick}
+      className={`
+        ${sizeValues[props.size || "md"]}
+        flex items-center gap-3 w-full
+        rounded-lg
+        text-[rgb(var(--color-text-secondary))]
+        hover:bg-[rgb(var(--color-bg-tertiary))]
+        hover:text-[rgb(var(--color-text-primary))]
+        hover:scale-[1.02]
+        transition-all duration-200
+        ${props.active ? 'bg-gradient-to-r from-[rgb(var(--color-primary-light))] to-[rgb(var(--color-accent-light))] text-[rgb(var(--color-primary))] shadow-sm' : ''}
+        focus-ring
+      `}
+    >
+      <div className="flex items-center">{props.icon}</div>
+      <span className="font-medium">{props.text}</span>
     </button>
   );
 };

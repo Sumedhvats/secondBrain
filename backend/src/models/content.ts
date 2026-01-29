@@ -1,20 +1,21 @@
 import mongoose from "mongoose";
-const contentTypes = ['image', 'video', 'article', 'audio','tweet','memory']; // Extend as needed
+const contentTypes = ['image', 'video', 'article', 'audio', 'tweet', 'memory']; // Extend as needed
 const content = new mongoose.Schema(
-    {
-        link:{type:String},
-        type:{type:String,enum:contentTypes,require:true},
-        title:{type:String,require:true},
-        tags:[{ type: mongoose.Types.ObjectId, ref: 'Tag' }],
-        userId:{type:mongoose.Types.ObjectId, ref:'User', require:true}
-        },
-        {
-          timestamps: true 
-        }
-       
+  {
+    link: { type: String },
+    type: { type: String, enum: contentTypes, require: true },
+    title: { type: String, require: true },
+    description: { type: String, required: false },
+    tags: [{ type: mongoose.Types.ObjectId, ref: 'Tag' }],
+    userId: { type: mongoose.Types.ObjectId, ref: 'User', require: true }
+  },
+  {
+    timestamps: true
+  }
 
 
-    
+
+
 )
-const contentModel = mongoose.model("Content",content);
+const contentModel = mongoose.model("Content", content);
 export default contentModel;
