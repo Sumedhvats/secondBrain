@@ -1,4 +1,5 @@
 import { Tweet } from "react-tweet";
+import { ErrorBoundary } from "./ErrorBoundary";
 import { DeleteIcon } from "../../icons/DeleteIcon";
 import { DocumentIcon } from "../../icons/DocumentIcon";
 import { LinksIcon } from "../../icons/LinksIcon";
@@ -134,16 +135,34 @@ export const CardComponent = (props: CardProps) => {
       {props.type === "tweet" && props.link && (
         <div className="w-full mt-2 mb-2" data-theme="light">
           {extractTweetId(props.link) ? (
-            <Tweet
-              id={extractTweetId(props.link) as string}
-              //@ts-ignore*/
-              theme="light"
-              mode="default"
-            />
+            <ErrorBoundary
+              fallback={
+                <a
+                  href={props.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[rgb(var(--color-primary))] hover:underline break-words text-sm"
+                >
+                  View tweet on X/Twitter
+                </a>
+              }
+            >
+              <Tweet
+                id={extractTweetId(props.link) as string}
+                //@ts-ignore*/
+                theme="light"
+                mode="default"
+              />
+            </ErrorBoundary>
           ) : (
-            <p className="text-sm text-red-500 bg-red-50 p-2 rounded border border-red-200">
-              Invalid Tweet URL
-            </p>
+            <a
+              href={props.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[rgb(var(--color-primary))] hover:underline break-words text-sm"
+            >
+              View tweet on X/Twitter
+            </a>
           )}
         </div>
       )}
