@@ -133,12 +133,18 @@ export const CardComponent = (props: CardProps) => {
 
       {props.type === "tweet" && props.link && (
         <div className="w-full mt-2 mb-2" data-theme="light">
-          <Tweet
-            id={extractTweetId(props.link) as string}
-            //@ts-ignore*/
-            theme="light"
-            mode="default"
-          />
+          {extractTweetId(props.link) ? (
+            <Tweet
+              id={extractTweetId(props.link) as string}
+              //@ts-ignore*/
+              theme="light"
+              mode="default"
+            />
+          ) : (
+            <p className="text-sm text-red-500 bg-red-50 p-2 rounded border border-red-200">
+              Invalid Tweet URL
+            </p>
+          )}
         </div>
       )}
 

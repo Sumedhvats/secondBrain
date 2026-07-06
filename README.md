@@ -1,10 +1,10 @@
-# Second Brain
+# secondBrain
 
 Visit the live website at: [https://vats-second-brain.netlify.app/](https://vats-second-brain.netlify.app/)
 
 ## Overview
 
-Second Brain is an application designed to save your content with integrated dynamic embedding of social content such as Twitter, Reddit, and YouTube. It allows you to capture, organize, and access your saved content for future reference efficiently.
+secondBrain is an application designed to save your content with integrated dynamic embedding of social content such as Twitter, Reddit, and YouTube. It allows you to capture, organize, and access your saved content for future reference efficiently.
 
 ## Features
 
@@ -121,7 +121,7 @@ This project serves as a content saving and embedding platform where you can cap
 
 ## Contributing
 
-Contributions to improve the Second Brain framework are welcome. Please feel free to submit a pull request or open an issue to discuss potential improvements.
+Contributions to improve the secondBrain framework are welcome. Please feel free to submit a pull request or open an issue to discuss potential improvements.
 
 ## License
 

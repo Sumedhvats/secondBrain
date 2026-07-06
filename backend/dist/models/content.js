@@ -9,6 +9,7 @@ const content = new mongoose_1.default.Schema({
     link: { type: String },
     type: { type: String, enum: contentTypes, require: true },
     title: { type: String, require: true },
+    description: { type: String, required: false },
     tags: [{ type: mongoose_1.default.Types.ObjectId, ref: 'Tag' }],
     userId: { type: mongoose_1.default.Types.ObjectId, ref: 'User', require: true }
 }, {

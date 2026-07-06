@@ -11,6 +11,7 @@ const contentSchema = zod_1.default.object({
     link: zod_1.default.string().url(),
     type: zod_1.default.enum(["image", "video", "article", "audio", "tweet", "memory"]),
     title: zod_1.default.string().min(1, "Title is required"),
+    description: zod_1.default.string().optional(),
     tags: zod_1.default.union([
         zod_1.default.string(),
         zod_1.default.array(zod_1.default.string().min(1))
@@ -19,7 +20,7 @@ const contentSchema = zod_1.default.object({
 });
 const addContent = async (req, res) => {
     try {
-        const { type, link, title, tags } = req.body;
+        const { type, link, title, description, tags } = req.body;
         const decoded = req.decoded;
         let tagArray = [];
         if (typeof tags === "string") {
@@ -40,6 +41,7 @@ const addContent = async (req, res) => {
             type,
             link,
             title,
+            description,
             //@ts-ignore
             userId: decoded.id,
             tags: tagIds,
