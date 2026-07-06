@@ -1,11 +1,10 @@
-import { Tweet } from "react-tweet";
-import { ErrorBoundary } from "./ErrorBoundary";
 import { DeleteIcon } from "../../icons/DeleteIcon";
 import { DocumentIcon } from "../../icons/DocumentIcon";
 import { LinksIcon } from "../../icons/LinksIcon";
 import { ShareIcon } from "../../icons/ShareIcon";
 import { TweetIcon } from "../../icons/TweetIcon";
 import { VideoIcon } from "../../icons/videos";
+import { TweetEmbed } from "./TweetEmbed";
 import axios from "axios";
 import { BACKENDURL } from "../../config";
 import { useEffect } from "react";
@@ -125,7 +124,7 @@ export const CardComponent = (props: CardProps) => {
             className="w-full h-full rounded"
             src={getYouTubeEmbedUrl(props.link)}
             title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
           />
@@ -133,37 +132,8 @@ export const CardComponent = (props: CardProps) => {
       )}
 
       {props.type === "tweet" && props.link && (
-        <div className="w-full mt-2 mb-2" data-theme="light">
-          {extractTweetId(props.link) ? (
-            <ErrorBoundary
-              fallback={
-                <a
-                  href={props.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[rgb(var(--color-primary))] hover:underline break-words text-sm"
-                >
-                  View tweet on X/Twitter
-                </a>
-              }
-            >
-              <Tweet
-                id={extractTweetId(props.link) as string}
-                //@ts-ignore*/
-                theme="light"
-                mode="default"
-              />
-            </ErrorBoundary>
-          ) : (
-            <a
-              href={props.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[rgb(var(--color-primary))] hover:underline break-words text-sm"
-            >
-              View tweet on X/Twitter
-            </a>
-          )}
+        <div className="w-full mt-2 mb-2">
+          <TweetEmbed tweetUrl={props.link} />
         </div>
       )}
 
@@ -204,8 +174,3 @@ export const CardComponent = (props: CardProps) => {
     </div>
   );
 };
-
-function extractTweetId(url: string) {
-  const match = url.match(/\/status\/(\d+)/);
-  return match ? match[1] : null;
-}
