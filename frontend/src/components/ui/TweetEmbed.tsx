@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 interface TweetEmbedProps {
   tweetUrl: string;
@@ -6,42 +6,63 @@ interface TweetEmbedProps {
 }
 
 export const TweetEmbed = ({ tweetUrl, theme = "light" }: TweetEmbedProps) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const tweetContainerRef = useRef<HTMLDivElement | null>(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const mountedRef = useRef(true);
+
+  const tweetId = extractTweetId(tweetUrl);
+
+  const loadTweet = useCallback(() => {
+    if (!mountedRef.current || !wrapperRef.current || !tweetId) return;
+
+    const twttr = (window as any).twttr;
+    if (!twttr?.widgets) return;
+
+    // Create a fresh container for Twitter to render into,
+    // completely outside React's DOM management
+    if (tweetContainerRef.current && wrapperRef.current.contains(tweetContainerRef.current)) {
+      wrapperRef.current.removeChild(tweetContainerRef.current);
+    }
+    const container = document.createElement("div");
+    tweetContainerRef.current = container;
+    wrapperRef.current.appendChild(container);
+
+    twttr.widgets
+      .createTweet(tweetId, container, {
+        theme,
+        conversation: "none",
+        align: "center",
+      })
+      .then((el: HTMLElement | undefined) => {
+        if (!mountedRef.current) return;
+        setLoading(false);
+        if (!el) {
+          setError(true);
+        }
+      })
+      .catch(() => {
+        if (!mountedRef.current) return;
+        setLoading(false);
+        setError(true);
+      });
+  }, [tweetId, theme]);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    mountedRef.current = true;
 
-    // Clear previous content
-    containerRef.current.innerHTML = "";
+    if (!tweetId) {
+      setError(true);
+      setLoading(false);
+      return;
+    }
+
     setError(false);
     setLoading(true);
 
-    const loadTweet = () => {
-      const twttr = (window as any).twttr;
-      if (twttr && twttr.widgets) {
-        twttr.widgets
-          .createTweet(extractTweetId(tweetUrl)!, containerRef.current!, {
-            theme,
-            conversation: "none",
-            align: "center",
-          })
-          .then((el: HTMLElement | undefined) => {
-            setLoading(false);
-            if (!el) {
-              setError(true);
-            }
-          })
-          .catch(() => {
-            setLoading(false);
-            setError(true);
-          });
-      }
-    };
-
     // Check if Twitter widgets script is already loaded
-    if ((window as any).twttr && (window as any).twttr.widgets) {
+    if ((window as any).twttr?.widgets) {
       loadTweet();
     } else {
       // Load Twitter widgets.js
@@ -53,20 +74,40 @@ export const TweetEmbed = ({ tweetUrl, theme = "light" }: TweetEmbedProps) => {
         script.async = true;
         script.onload = () => loadTweet();
         script.onerror = () => {
+          if (!mountedRef.current) return;
           setLoading(false);
           setError(true);
         };
         document.body.appendChild(script);
       } else {
-        // Script tag exists but may still be loading
-        existingScript.addEventListener("load", loadTweet);
-        // If already loaded, twttr would exist
-        if ((window as any).twttr && (window as any).twttr.widgets) {
-          loadTweet();
-        }
+        // Script exists — wait for twttr to be ready
+        const checkReady = setInterval(() => {
+          if ((window as any).twttr?.widgets) {
+            clearInterval(checkReady);
+            loadTweet();
+          }
+        }, 100);
+
+        // Timeout after 5s
+        setTimeout(() => {
+          clearInterval(checkReady);
+          if (mountedRef.current && loading) {
+            setLoading(false);
+            setError(true);
+          }
+        }, 5000);
       }
     }
-  }, [tweetUrl, theme]);
+
+    return () => {
+      mountedRef.current = false;
+      // Clean up the tweet container we created outside React
+      if (tweetContainerRef.current && wrapperRef.current?.contains(tweetContainerRef.current)) {
+        wrapperRef.current.removeChild(tweetContainerRef.current);
+        tweetContainerRef.current = null;
+      }
+    };
+  }, [tweetUrl, theme, loadTweet]);
 
   if (error) {
     return (
@@ -82,12 +123,18 @@ export const TweetEmbed = ({ tweetUrl, theme = "light" }: TweetEmbedProps) => {
   }
 
   return (
-    <div ref={containerRef} className="w-full">
+    <div>
       {loading && (
         <div className="flex justify-center items-center py-4">
           <div className="w-5 h-5 border-2 border-[rgb(var(--color-primary))] border-t-transparent rounded-full animate-spin"></div>
         </div>
       )}
+      {/* 
+        This wrapper is intentionally empty of React children.
+        Twitter's widgets.js will inject DOM into it directly.
+        Keeping React out of this subtree prevents removeChild conflicts.
+      */}
+      <div ref={wrapperRef} />
     </div>
   );
 };

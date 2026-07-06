@@ -38,128 +38,105 @@
   --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.06);
 
   /* Glow Effects */
-  --glow-primary: 0 0 20px rgba(119, 85, 197, 0.3);
-  --glow-primary-lg: 0 0 40px rgba(119, 85, 197, 0.4);
+  --glow-primary: 0 0 20px rgba(52, 169, 157, 0.3);
+  --glow-primary-lg: 0 0 40px rgba(52, 169, 157, 0.4);
 }
 
 /* Light Theme Colors */
 [data-theme="light"] {
-  /* Primary Brand Color - Enhanced Purple */
-  --color-primary: 124 58 237;
-  /* vibrant purple #7c3aed */
-  --color-primary-hover: 109 40 217;
-  /* deeper purple */
-  --color-primary-light: 237 233 254;
-  /* light purple bg */
-  --color-primary-dark: 88 28 135;
-  /* dark purple */
+  /* Primary Brand Color - Teal #34A99D */
+  --color-primary: 52 169 157;
+  --color-primary-hover: 39 145 135;
+  --color-primary-light: 230 248 246;
+  --color-primary-dark: 69 131 147;
+  /* #458393 */
 
-  /* Accent Colors */
-  --color-accent: 236 72 153;
-  /* pink accent */
-  --color-accent-light: 252 231 243;
+  /* Accent Colors - Warm Gold #E5CB90 */
+  --color-accent: 229 203 144;
+  --color-accent-light: 255 243 200;
+  /* #FFF3C8 */
 
   /* Background Colors */
   --color-bg-primary: 255 255 255;
-  --color-bg-secondary: 249 250 251;
-  /* warmer gray-50 */
-  --color-bg-tertiary: 243 244 246;
-  /* gray-100 */
+  --color-bg-secondary: 255 250 240;
+  /* warm cream tint */
+  --color-bg-tertiary: 255 243 200;
+  /* #FFF3C8 */
   --color-bg-elevated: 255 255 255;
 
   /* Text Colors */
   --color-text-primary: 17 24 39;
-  /* gray-900 */
   --color-text-secondary: 75 85 99;
-  /* gray-600 */
   --color-text-tertiary: 156 163 175;
-  /* gray-400 */
 
   /* Border Colors */
-  --color-border: 229 231 235;
-  /* gray-200 */
-  --color-border-hover: 209 213 219;
-  /* gray-300 */
-  --color-border-focus: 124 58 237;
+  --color-border: 229 220 200;
+  --color-border-hover: 209 195 170;
+  --color-border-focus: 52 169 157;
   /* primary */
 
   /* Status Colors */
   --color-success: 16 185 129;
-  /* emerald-500 */
   --color-error: 239 68 68;
-  /* red-500 */
   --color-warning: 245 158 11;
-  /* amber-500 */
-  --color-info: 59 130 246;
-  /* blue-500 */
+  --color-info: 69 131 147;
+  /* #458393 */
 
   /* Glassmorphism */
-  --glass-bg: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(255, 255, 255, 0.3);
-  --glass-shadow: rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(255, 250, 240, 0.85);
+  --glass-border: rgba(229, 203, 144, 0.3);
+  --glass-shadow: rgba(69, 131, 147, 0.1);
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, rgb(124 58 237) 0%, rgb(236 72 153) 100%);
-  --gradient-subtle: linear-gradient(135deg, rgb(249 250 251) 0%, rgb(243 244 246) 100%);
-  --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(249, 250, 251, 0.9) 100%);
+  --gradient-primary: linear-gradient(135deg, rgb(52 169 157) 0%, rgb(69 131 147) 100%);
+  --gradient-subtle: linear-gradient(135deg, rgb(255 250 240) 0%, rgb(255 243 200) 100%);
+  --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 250, 240, 0.9) 100%);
 }
 
 /* Dark Theme Colors */
 [data-theme="dark"] {
-  /* Primary Brand Color - Lighter for dark mode */
-  --color-primary: 167 139 250;
-  /* lighter purple #a78bfa */
-  --color-primary-hover: 196 181 253;
-  /* even lighter */
-  --color-primary-light: 88 28 135;
-  /* dark purple bg */
-  --color-primary-dark: 196 181 253;
+  /* Primary Brand Color - Lighter teal for dark mode */
+  --color-primary: 94 209 197;
+  --color-primary-hover: 130 225 215;
+  --color-primary-light: 25 60 55;
+  --color-primary-dark: 130 225 215;
 
-  /* Accent Colors */
-  --color-accent: 244 114 182;
-  /* pink accent */
-  --color-accent-light: 88 28 135;
+  /* Accent Colors - Warm Gold lighter for dark mode */
+  --color-accent: 240 218 170;
+  --color-accent-light: 50 40 25;
 
   /* Background Colors */
-  --color-bg-primary: 17 24 39;
-  /* gray-900 */
-  --color-bg-secondary: 31 41 55;
-  /* gray-800 */
-  --color-bg-tertiary: 55 65 81;
-  /* gray-700 */
-  --color-bg-elevated: 31 41 55;
+  --color-bg-primary: 15 20 30;
+  --color-bg-secondary: 22 30 42;
+  --color-bg-tertiary: 35 45 58;
+  --color-bg-elevated: 28 36 50;
 
   /* Text Colors */
   --color-text-primary: 249 250 251;
-  /* gray-50 */
   --color-text-secondary: 209 213 219;
-  /* gray-300 */
   --color-text-tertiary: 156 163 175;
-  /* gray-400 */
 
   /* Border Colors */
-  --color-border: 55 65 81;
-  /* gray-700 */
-  --color-border-hover: 75 85 99;
-  /* gray-600 */
-  --color-border-focus: 167 139 250;
+  --color-border: 45 55 70;
+  --color-border-hover: 65 80 95;
+  --color-border-focus: 94 209 197;
   /* primary */
 
   /* Status Colors */
   --color-success: 16 185 129;
   --color-error: 239 68 68;
   --color-warning: 245 158 11;
-  --color-info: 59 130 246;
+  --color-info: 94 209 197;
 
   /* Glassmorphism */
-  --glass-bg: rgba(31, 41, 55, 0.8);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-bg: rgba(22, 30, 42, 0.85);
+  --glass-border: rgba(94, 209, 197, 0.12);
   --glass-shadow: rgba(0, 0, 0, 0.5);
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, rgb(167 139 250) 0%, rgb(244 114 182) 100%);
-  --gradient-subtle: linear-gradient(135deg, rgb(31 41 55) 0%, rgb(55 65 81) 100%);
-  --gradient-card: linear-gradient(135deg, rgba(31, 41, 55, 0.9) 0%, rgba(55, 65, 81, 0.8) 100%);
+  --gradient-primary: linear-gradient(135deg, rgb(94 209 197) 0%, rgb(69 131 147) 100%);
+  --gradient-subtle: linear-gradient(135deg, rgb(22 30 42) 0%, rgb(35 45 58) 100%);
+  --gradient-card: linear-gradient(135deg, rgba(22, 30, 42, 0.9) 0%, rgba(35, 45, 58, 0.8) 100%);
 }
 
 /* ============================================
